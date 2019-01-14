@@ -1,5 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 
+import { GamePage } from '../game/game.page';
+
 
 @Component({
   selector: 'app-home',
@@ -7,6 +9,8 @@ import { Component, ViewChild } from '@angular/core';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
+  root = GamePage;
+
   size = 4;
   
   scores = 0;

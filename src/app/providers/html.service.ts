@@ -4,6 +4,7 @@ import { Grid } from './classes/grid';
 export class HTMLService {
   container;
   className = 'tile';
+  innerClass = 'tile__inner';
   mergedClass = 'tile_merged';
   newClass = 'tile_new';
   valueAttr = 'data-value';
@@ -38,12 +39,16 @@ export class HTMLService {
   addTile(tile:Tile):void {
     // создать элемент тайла
     let wrapper:any = document.createElement('div');
+    let inner:any = document.createElement('div');
+    wrapper.appendChild(inner);
+    inner.setAttribute('class', this.innerClass);
 
     let tileClasses = [this.className]; // массив классов
     // присваивание через classlist вызывает мигание, поэтому setAttribute
 
     // устанавливаем значение
     wrapper.setAttribute(this.valueAttr, tile.value);
+    inner.textContent = tile.value;
 
     // позиция тайла
     let position = tile.previousPosition || { x: tile.x, y: tile.y };

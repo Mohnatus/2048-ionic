@@ -1,8 +1,29 @@
 $moveAnimationTime: 400ms;
 $mergeAnimationTime: 200ms;
-$mergeAnimationDelay: 300ms;
+$mergeAnimationDelay: 450ms;
 $newAnimationTime: 200ms;
 $newAnimationDelay: 300ms;
+
+$cellSize: 50px;
+$playgroundGap: 10px;
+
+$baseTileColor: lightgreen;
+$middleTileColor: lightyellow;
+$superTileColor: red;
+
+$values: (
+    1: 2, 
+    2: 4, 
+    3: 8, 
+    4: 16, 
+    5: 32, 
+    6: 64, 
+    7: 128, 
+    8: 256, 
+    9: 512, 
+    10: 1028, 
+    11: 2048
+);
 
 @keyframes mergeTiles {
     0% {
@@ -10,6 +31,7 @@ $newAnimationDelay: 300ms;
         -moz-transform: scale(0);
         -ms-transform: scale(0);
         transform: scale(0); 
+        opacity: 0;
     }
 
     50% {
@@ -24,6 +46,7 @@ $newAnimationDelay: 300ms;
         -moz-transform: scale(1);
         -ms-transform: scale(1);
         transform: scale(1); 
+        opacity: 1;
     } 
 }
 
@@ -32,7 +55,6 @@ $newAnimationDelay: 300ms;
         opacity: 1;
     }
 }
-
 
 .playground {
     width: 100%;
@@ -46,33 +68,38 @@ $newAnimationDelay: 300ms;
         display: flex;
     }
     &__cell {
-        width: 40px;
-        height: 40px;
+        width: $cellSize;
+        height: $cellSize;
         background: lightblue;
-        margin: 5px;
+        margin: $playgroundGap / 2;
+
+        border-radius: 50%;
     }
 
     &__wrapper {
         position: relative;
+        background: blue;
+
+        padding: $playgroundGap;
     }
 
     &__tiles {
         position: absolute;
         top: 0; right: 0; bottom: 0; left: 0;
         outline: 3px solid;
+
+        padding: $playgroundGap;
     }
 }
 
 
 .tile {
-    width: 40px;
-    height: 40px;
-    margin: 5px;
-    background: green;
+    width: $cellSize;
+    height: $cellSize;
+    margin: $playgroundGap / 2;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    border-radius: 50%;
+    overflow: hidden;
 
     position: absolute;
     top: 0;
@@ -84,33 +111,58 @@ $newAnimationDelay: 300ms;
         position: absolute;
         top: 0; left: 0; bottom: 0; right: 0;
 
-        &:before {
-            content: attr(data-value);
-        }
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        background: lightgreen;
     }
 
     @for $x from 1 through 4 {
         @for $y from 1 through 4 {
             &[data-row="#{$y}"][data-col="#{$x}"] {
-                transform: translate(($x - 1) * 50px, ($y - 1) * 50px);
+                transform: translate(
+                    ($x - 1) * ($cellSize + $playgroundGap) + $playgroundGap, 
+                    ($y - 1) * ($cellSize + $playgroundGap) + $playgroundGap
+                );
+            }
+        }
+    }
+
+    @each $index, $value in $values {
+        &[data-value="#{$value}"] {
+            .tile__inner {
+                @if $index < 6 {
+                    background: darken($baseTileColor, ($index - 1) * 10%);
+                } @else if $index < 11 {
+                    background: darken($middleTileColor, ($index - 1) * 10%);
+                } @else {
+                    background: $superTileColor;
+                }
+                
             }
         }
     }
 
 
     &_merged {
-        animation-name: mergeTiles;
-        animation-delay: $mergeAnimationDelay;
-        animation-duration: $mergeAnimationTime;
-        animation-fill-mode: forwards;
-        transition: none;
+        .tile__inner {
+            opacity: 0;
+            animation-name: mergeTiles;
+            animation-delay: $mergeAnimationDelay;
+            animation-duration: $mergeAnimationTime;
+            animation-fill-mode: forwards;
+            transition: none;
+        }
     }
 
     &_new {
-        opacity: 0;
-        animation-name: newTile;
-        animation-delay: $newAnimationDelay;
-        animation-duration: $newAnimationTime;
-        animation-fill-mode: forwards;
+        .tile__inner {
+            opacity: 0;
+            animation-name: newTile;
+            animation-delay: $newAnimationDelay;
+            animation-duration: $newAnimationTime;
+            animation-fill-mode: forwards;
+        }
     }
 }
