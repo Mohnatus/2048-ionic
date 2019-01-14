@@ -1,12 +1,15 @@
-import { Component, Input, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ElementRef, ViewEncapsulation  } from '@angular/core';
 
 import { InputService } from '../providers/input.service';
+import { GridService } from '../providers/grid.service';
+import { HTMLService } from '../providers/html.service';
 
 @Component({
   selector: 'game-playground',
   templateUrl: 'game.playground.html',
   styleUrls: ['game.playground.scss'],
-  providers: [ InputService ]
+  encapsulation: ViewEncapsulation.None,
+  providers: [ InputService, GridService, HTMLService ]
 })
 export class GamePlayground {
   @Input() size: number;
@@ -14,19 +17,22 @@ export class GamePlayground {
   @ViewChild("field")
   field: ElementRef;
 
+  @ViewChild("tiles")
+  tilesContainer: ElementRef;
+
   grid = [];
 
   constructor(
-    private inputService: InputService
+    private inputService: InputService,
+    private gridService: GridService
   ) {}
 
   ngOnInit() {
-    for (let y = 0; y < this.size; y++) {
-      this.grid[y] = [];
-      for (let x = 0; x < this.size; x++) {
-        this.grid[y][x] = x;
-      }
-    }
+    this.gridService.init(
+      this.size, 
+      this.tilesContainer.nativeElement
+    );
+    this.grid = this.gridService.getField();
 
     this.inputService.init(this.field.nativeElement);
     this.inputService.on(
@@ -36,7 +42,14 @@ export class GamePlayground {
   }
 
   move(direction):void {
-    console.log('move to', direction)
+    if (this.isTerminated()) {
+      return;
+    }
+    this.gridService.move(direction);
+  }
+
+  isTerminated():boolean {
+    return false;
   }
 
 }

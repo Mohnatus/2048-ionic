@@ -1,4 +1,3 @@
-import { directions } from './directions';
 import "hammerjs";
 
 export class InputService {
