@@ -1,12 +1,12 @@
 import { directions } from './directions';
 import "hammerjs";
 
-export class InputManager {
+export class InputService {
     field;
     hamming;
     subscribers = {};
     events = {
-        "move": "input.manager.event.move"
+        "move": "input.service.event.move"
     };
 
     init(field):void {

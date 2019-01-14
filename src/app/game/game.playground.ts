@@ -1,34 +1,36 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ElementRef } from '@angular/core';
 
-import { InputManager } from '../providers/input.manager';
+import { InputService } from '../providers/input.service';
 
 @Component({
   selector: 'game-playground',
   templateUrl: 'game.playground.html',
   styleUrls: ['game.playground.scss'],
-  providers: [ InputManager ]
+  providers: [ InputService ]
 })
 export class GamePlayground {
   @Input() size: number;
 
-  field;
+  @ViewChild("field")
+  field: ElementRef;
+
+  grid = [];
 
   constructor(
-    private inputManager: InputManager
+    private inputService: InputService
   ) {}
 
   ngOnInit() {
-    this.field = [];
     for (let y = 0; y < this.size; y++) {
-      this.field[y] = [];
+      this.grid[y] = [];
       for (let x = 0; x < this.size; x++) {
-        this.field[y][x] = x;
+        this.grid[y][x] = x;
       }
     }
 
-    this.inputManager.init(document.querySelector('.playground'));
-    this.inputManager.on(
-      this.inputManager.events.move,
+    this.inputService.init(this.field.nativeElement);
+    this.inputService.on(
+      this.inputService.events.move,
       (data) => this.move(data.direction)
     )
   }
