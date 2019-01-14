@@ -1,0 +1,11 @@
+.playground {
+    &__row {
+        display: flex;
+    }
+    &__cell {
+        width: 40px;
+        height: 40px;
+        background: lightblue;
+        margin: 5px;
+    }
+}
