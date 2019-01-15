@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute} from '@angular/router';
+import {Subscription} from 'rxjs';
 import { Storage } from '@ionic/storage';
+
+import { GamePlayground } from './game.playground';
 
 @Component({
   selector: 'app-game',
@@ -8,44 +11,60 @@ import { Storage } from '@ionic/storage';
   styleUrls: ['./game.page.scss'],
 })
 export class GamePage implements OnInit {
-  
+  @ViewChild(GamePlayground)
+  playground: GamePlayground;
 
-  constructor(
-    private activateRoute: ActivatedRoute,
-    private storage: Storage
-  ) {
-    this.isSaved = activateRoute.snapshot.params['type'] == 'saved';
-  }
-
-  ngOnInit() {
-  }
-
-  isSaved = false;
-
+  //isSaved = false;
+  fromParam = { from: '/game' };
   size = 4;
   
   scores = 0;
   current = 0;
-  best = 0;
+  best:number = 0;
+
+  isSaved = false;
+  private querySubscription: Subscription;
+
+  constructor(
+    private route: ActivatedRoute,
+    private storage: Storage
+  ) {
+    this.querySubscription = route.queryParams.subscribe(
+      (queryParam: any) => {
+        console.log(123, queryParam, queryParam['type'])
+        this.isSaved = queryParam['type'] == 'saved';
+      }
+    );
+  }
+
+  ngOnInit(){}
+
+
+  start(data:any | null):void {
+    
+
+    console.log('start', data)
+    if (data) {
+      this.scores = data.scores;
+      this.playground.start(data.cells);
+    } else {
+      this.scores = 0;
+      this.playground.start(null);
+    }
+
+  }
 
   restart():void {
-    console.log('restart')
+    this.start(null);
   }
 
-  showRules():void {
-    console.log('show rules')
+  saveGame(game) {
+    this.storage.set('game', game);
   }
 
-  
-  
-
-  saveGame() {
-    this.storage.set('test', 'testvalue');
-  }
-
-  getSavedGame() {
-    this.storage.get('test').then((val) => {
-      console.log('test storage value is', val);
-    });
+  getSavedGame(callback) {
+    this.storage.get('game').then(val => {
+      callback(val);
+    })
   }
 }

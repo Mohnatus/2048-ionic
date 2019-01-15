@@ -24,12 +24,9 @@ export class Grid {
   }
 
   getCellContent(cell:Cell):any {
-    console.log('get cell content', cell.x, cell.y)
     if (this.isWithinBounds(cell)) {
-      console.log('is within bounds')
       return this.cells[cell.y][cell.x]
     } else {
-      console.log('not within')
       return null;
     }
   }
@@ -60,6 +57,22 @@ export class Grid {
 
   insertTile(tile:Tile):void {
     this.cells[tile.y][tile.x] = tile;
+  }
+
+  clear():void {
+    console.log(1, this.cells)
+    this.cells.forEach((row, y) => {
+      console.log(2, row)
+      row.forEach((col, x) => {
+        console.log(3, col)
+        this.cells[y][x] = null;
+      })
+    })
+  }
+
+  load(cells:any):void {
+    if (cells)
+      this.cells = cells;
   }
 
   removeTile(tile:Tile):void {

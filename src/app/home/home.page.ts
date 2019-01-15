@@ -8,8 +8,12 @@ import { Component, ViewChild } from '@angular/core';
 export class HomePage {
   menu = [
     {
+      'text': 'Продолжить',
+      'link': '/game',
+      'params': { 'type': 'saved' }
+    },{
       'text': 'Начать игру',
-      'link': '/game/new'
+      'link': '/game'
     },{
       'text': 'Статистика',
       'link': '/stats'

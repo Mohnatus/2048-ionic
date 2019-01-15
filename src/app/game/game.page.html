@@ -34,13 +34,11 @@
             <ion-icon ios="ios-refresh" md="md-refresh"></ion-icon>
         </button>
 
-        
-        
-        <button ion-button class="footer__button" (click)="showRules()">
+        <a class="footer__button" routerLink="/rules" queryParams="fromParam">
             <ion-icon ios="ios-information-circle" md="md-information-circle"></ion-icon>
-        </button>
+        </a>
 
-        <a class="footer__button" routerLink="/settings">
+        <a class="footer__button" routerLink="/settings" queryParams="fromParam">
             <ion-icon ios="ios-settings" md="md-settings"></ion-icon>
         </a>
     </div>

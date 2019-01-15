@@ -12,7 +12,7 @@ const routes: Routes = [
     loadChildren: './home/home.module#HomePageModule' 
   },
   {
-    path: 'game/:type',
+    path: 'game',
     loadChildren: './game/game.module#GamePageModule'
   },
   { 

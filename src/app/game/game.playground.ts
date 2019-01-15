@@ -4,6 +4,8 @@ import { InputService } from '../providers/input.service';
 import { GridService } from '../providers/grid.service';
 import { HTMLService } from '../providers/html.service';
 
+import { Storage } from '@ionic/storage';
+
 @Component({
   selector: 'game-playground',
   templateUrl: 'game.playground.html',
@@ -13,6 +15,7 @@ import { HTMLService } from '../providers/html.service';
 })
 export class GamePlayground {
   @Input() size: number;
+  @Input() isSaved: boolean;
 
   @ViewChild("field")
   field: ElementRef;
@@ -21,10 +24,12 @@ export class GamePlayground {
   tilesContainer: ElementRef;
 
   grid = [];
+  moveTriggered = false;
 
   constructor(
     private inputService: InputService,
-    private gridService: GridService
+    private gridService: GridService,
+    private storage: Storage
   ) {}
 
   ngOnInit() {
@@ -35,13 +40,23 @@ export class GamePlayground {
     this.grid = this.gridService.getField();
 
     this.inputService.init(this.field.nativeElement);
-    this.inputService.on(
-      this.inputService.events.move,
-      (data) => this.move(data.direction)
-    )
+  }
+
+  start(gameData:any):void {
+    this.gridService.start(gameData);
+
+    if (!this.moveTriggered) {
+      this.moveTriggered = true;
+      this.inputService.on(
+        this.inputService.events.move,
+        (data) => this.move(data.direction)
+      );
+    }
+    
   }
 
   move(direction):void {
+  
     if (this.isTerminated()) {
       return;
     }

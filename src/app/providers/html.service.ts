@@ -31,9 +31,7 @@ export class HTMLService {
   }
 
   clear():void {
-    console.log(this.container)
     while (this.container.firstChild) {
-      console.log(this.container.firstChild)
       this.container.removeChild(this.container.firstChild);
     }
   }

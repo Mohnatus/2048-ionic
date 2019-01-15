@@ -3,11 +3,8 @@
 <ion-content padding>
   
   <ion-list>
-    <div ion-item>
-        <a  routerLink="/game/saved">Продолжить</a>
-    </div>
     <div ion-item *ngFor="let item of menu">
-        <a [routerLink]="item.link">{{ item.text }}</a>
+        <a [routerLink]="item.link" [queryParams]="item.params">{{ item.text }}</a>
     </div>
   </ion-list>
 

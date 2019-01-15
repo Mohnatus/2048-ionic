@@ -41,9 +41,20 @@ export class GridService {
     this.vectors[directions.down] = { x: 0, y: 1 };
 
     this.grid = new Grid(this.size); // создаем сетку
+  }
 
-    this.addStartTiles(); // добавляем стартовые тайлы
+  start(savedGrid:any|null):void {
+    console.log('grid service start')
+    
+    if (savedGrid)
+      this.grid.load(savedGrid); // загружаем сохраненную сетку
+    else {
+      this.grid.clear();
+      this.addStartTiles(); // добавляем стартовые тайлы
+    }
 
+    console.log(this.grid.cells)
+    
     this.actuate();
   }
 
@@ -122,13 +133,13 @@ export class GridService {
   move(direction:number):void {
     let cell:Cell, tile:any;
 
-    console.log('vector', direction, this.vectors)
-
     let vector:object = this.vectors[direction];
     let traversals:any = this.buildTraversals(vector);
     let moved:boolean = false;
 
     this.prepareTiles();
+
+    console.log('move', this.grid.cells)
 
     // повернуть сетку в нужном направлении и передвинуть тайлы
     traversals.y.forEach(y => {
