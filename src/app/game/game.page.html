@@ -1,34 +1,47 @@
 <ion-header class="header" padding>
     <div class="container">
-        <div class="back">
-            <a routerLink="/home">
-                <ion-icon ios="ios-arrow-round-back" md="md-arrow-round-back"></ion-icon>
-            </a>
-        </div>
-        <div class="scores">
-            <div class="scores__item">{{ scores }}</div>
-            <div class="scores__current" *ngIf="current">{{ current }}</div>
-        </div>
+        <a class="back" routerLink="/home">
+            <ion-icon ios="ios-arrow-round-back" md="md-arrow-round-back"></ion-icon>
+        </a>
+
         <ion-title class="title">
             2048
         </ion-title>
     </div>  
-  </ion-header>
+</ion-header>
   
-  <ion-content padding>
-    <game-playground [size]="size"></game-playground>
+<ion-content padding>
+    <div class="content">
+        <div class="scores">
+            <div class="scores__item">
+                {{ scores }}
+                <div class="scores__current" *ngIf="current">{{ current }}</div>
+            </div>
+            <div class="scores__item">
+                {{ best }}
+            </div>
+        </div>
+        <div class="game">
+            <game-playground [size]="size"></game-playground>
+        </div>
+    </div>
   </ion-content>
   
   <ion-footer class="footer" padding>
     <div class="container">
-        <a class="footer__button" routerLink="/settings">
-            <ion-icon ios="ios-settings" md="md-settings"></ion-icon>
-        </a>
+
         <button ion-button class="footer__button" (click)="restart()">
             <ion-icon ios="ios-refresh" md="md-refresh"></ion-icon>
         </button>
+
+        
+        
         <button ion-button class="footer__button" (click)="showRules()">
             <ion-icon ios="ios-information-circle" md="md-information-circle"></ion-icon>
         </button>
+
+        <a class="footer__button" routerLink="/settings">
+            <ion-icon ios="ios-settings" md="md-settings"></ion-icon>
+        </a>
     </div>
   </ion-footer>

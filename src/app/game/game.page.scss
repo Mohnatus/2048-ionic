@@ -22,6 +22,20 @@ $containerWidth: 800px;
     }
 }
 
+.content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    .game {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
 .footer {
     width: 100%;
 

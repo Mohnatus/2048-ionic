@@ -8,7 +8,7 @@ import { Storage } from '@ionic/storage';
   styleUrls: ['./game.page.scss'],
 })
 export class GamePage implements OnInit {
-  isSaved = false;
+  
 
   constructor(
     private activateRoute: ActivatedRoute,
@@ -20,10 +20,13 @@ export class GamePage implements OnInit {
   ngOnInit() {
   }
 
+  isSaved = false;
+
   size = 4;
   
   scores = 0;
   current = 0;
+  best = 0;
 
   restart():void {
     console.log('restart')
