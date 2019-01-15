@@ -5,7 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 import { HomePage } from './home.page';
-import { GamePlayground } from '../game/game.playground';
 
 @NgModule({
   imports: [
@@ -19,6 +18,6 @@ import { GamePlayground } from '../game/game.playground';
       }
     ])
   ],
-  declarations: [HomePage, GamePlayground]
+  declarations: [HomePage]
 })
 export class HomePageModule {}
