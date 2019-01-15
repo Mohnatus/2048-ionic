@@ -122,6 +122,8 @@ export class GridService {
   move(direction:number):void {
     let cell:Cell, tile:any;
 
+    console.log('vector', direction, this.vectors)
+
     let vector:object = this.vectors[direction];
     let traversals:any = this.buildTraversals(vector);
     let moved:boolean = false;

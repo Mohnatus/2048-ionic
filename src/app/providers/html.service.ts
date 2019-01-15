@@ -6,8 +6,10 @@ export class HTMLService {
   className = 'tile';
   innerClass = 'tile__inner';
   mergedClass = 'tile_merged';
+  
   newClass = 'tile_new';
   valueAttr = 'data-value';
+  oldValueAttr = 'data-old-value';
   rowAttr = 'data-row';
   colAttr = 'data-col';
   
@@ -71,6 +73,7 @@ export class HTMLService {
 
     } else if (tile.mergedFrom) {
       tileClasses.push(this.mergedClass);
+      wrapper.setAttribute(this.oldValueAttr, tile.value / 2);
       this.setTileClasses(wrapper, tileClasses);
       // отрендерить объединенные тайлы
       tile.mergedFrom.forEach(merged => {
