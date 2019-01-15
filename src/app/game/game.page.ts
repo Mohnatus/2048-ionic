@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute} from '@angular/router';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-game',
@@ -6,12 +8,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./game.page.scss'],
 })
 export class GamePage implements OnInit {
+  isSaved = false;
 
-  constructor() { }
+  constructor(
+    private activateRoute: ActivatedRoute,
+    private storage: Storage
+  ) {
+    this.isSaved = activateRoute.snapshot.params['type'] == 'saved';
+  }
 
   ngOnInit() {
   }
-
 
   size = 4;
   
@@ -25,5 +32,17 @@ export class GamePage implements OnInit {
   showRules():void {
     console.log('show rules')
   }
-}
 
+  
+  
+
+  saveGame() {
+    this.storage.set('test', 'testvalue');
+  }
+
+  getSavedGame() {
+    this.storage.get('test').then((val) => {
+      console.log('test storage value is', val);
+    });
+  }
+}

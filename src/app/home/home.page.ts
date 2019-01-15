@@ -20,5 +20,5 @@ export class HomePage {
       'text': 'Правила',
       'link': '/rules'
     }
-  ]
+  ];
 }
