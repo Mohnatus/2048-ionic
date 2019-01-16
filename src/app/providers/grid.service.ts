@@ -24,6 +24,7 @@ export class GridService {
   ) {}
 
   init(size:number, container) {
+    console.log('GRID INIT')
     this.size = size;
     for (let y = 0; y < this.size; y++) {
       this.field[y] = [];
@@ -43,17 +44,14 @@ export class GridService {
     this.grid = new Grid(this.size); // создаем сетку
   }
 
-  start(savedGrid:any|null):void {
-    console.log('grid service start')
-    
-    if (savedGrid)
+  start(savedGrid:any[]):void {
+    console.log('GRID START')
+    if (savedGrid.length)
       this.grid.load(savedGrid); // загружаем сохраненную сетку
     else {
       this.grid.clear();
       this.addStartTiles(); // добавляем стартовые тайлы
     }
-
-    console.log(this.grid.cells)
     
     this.actuate();
   }
@@ -61,6 +59,10 @@ export class GridService {
   // получить базовую сетку поля
   getField():any[] {
     return this.field;
+  }
+
+  getCells():any[] {
+    return this.grid.cells;
   }
 
   // добавить начальные тайлы
@@ -138,8 +140,6 @@ export class GridService {
     let moved:boolean = false;
 
     this.prepareTiles();
-
-    console.log('move', this.grid.cells)
 
     // повернуть сетку в нужном направлении и передвинуть тайлы
     traversals.y.forEach(y => {

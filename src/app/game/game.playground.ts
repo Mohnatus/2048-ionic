@@ -23,7 +23,7 @@ export class GamePlayground {
   @ViewChild("tiles")
   tilesContainer: ElementRef;
 
-  grid = [];
+  grid:any = [];
   moveTriggered = false;
 
   constructor(
@@ -33,6 +33,7 @@ export class GamePlayground {
   ) {}
 
   ngOnInit() {
+    console.log('PLAYGROUND INIT')
     this.gridService.init(
       this.size, 
       this.tilesContainer.nativeElement
@@ -42,8 +43,9 @@ export class GamePlayground {
     this.inputService.init(this.field.nativeElement);
   }
 
-  start(gameData:any):void {
-    this.gridService.start(gameData);
+  start(cells:any[]):void {
+    console.log('PLAYGROUND START')
+    this.gridService.start(cells);
 
     if (!this.moveTriggered) {
       this.moveTriggered = true;
@@ -65,6 +67,10 @@ export class GamePlayground {
 
   isTerminated():boolean {
     return false;
+  }
+
+  getCells():any[] {
+    return this.gridService.getCells();
   }
 
 }

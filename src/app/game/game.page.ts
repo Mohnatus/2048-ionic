@@ -14,7 +14,6 @@ export class GamePage implements OnInit {
   @ViewChild(GamePlayground)
   playground: GamePlayground;
 
-  //isSaved = false;
   fromParam = { from: '/game' };
   size = 4;
   
@@ -22,49 +21,69 @@ export class GamePage implements OnInit {
   current = 0;
   best:number = 0;
 
-  isSaved = false;
   private querySubscription: Subscription;
 
   constructor(
     private route: ActivatedRoute,
     private storage: Storage
   ) {
-    this.querySubscription = route.queryParams.subscribe(
+    
+  }
+
+  ngOnInit(){
+    console.log('PAGE INIT')
+    this.querySubscription = this.route.queryParams.subscribe(
       (queryParam: any) => {
-        console.log(123, queryParam, queryParam['type'])
-        this.isSaved = queryParam['type'] == 'saved';
+        
+        this.onRouteChange(queryParam['type'] == 'saved');
       }
     );
   }
 
-  ngOnInit(){}
-
-
-  start(data:any | null):void {
+  onRouteChange(isSaved){
+    console.log('PAGE ONROUTE CHANGE')
     
-
-    console.log('start', data)
-    if (data) {
-      this.scores = data.scores;
-      this.playground.start(data.cells);
+    if (isSaved) {
+      console.log('взять сохраненную')
+      this.getSavedGame(gameData => this.start(gameData));
     } else {
-      this.scores = 0;
-      this.playground.start(null);
+      console.log('начать новую')
+      this.start(this.getEmptyGameData());
     }
+  }
 
+
+  start(data:any):void {
+    console.log('start', data)
+    this.scores = data.scores || 0;
+    this.playground.start(data.cells);
   }
 
   restart():void {
-    this.start(null);
+    this.start(this.getEmptyGameData());
   }
 
-  saveGame(game) {
+  finishGame():void {
+    let game = this.playground.getCells();
+    this.saveGame(game);
+  }
+
+  saveGame(game:any) {
+    game = JSON.stringify(game);
     this.storage.set('game', game);
   }
 
-  getSavedGame(callback) {
+  getSavedGame(callback:any) {
     this.storage.get('game').then(val => {
+      val = JSON.parse(val) || this.getEmptyGameData();
       callback(val);
     })
+  }
+
+  getEmptyGameData():any {
+    return {
+      scores: 0,
+      cells: []
+    }
   }
 }

@@ -14,7 +14,6 @@ export class HTMLService {
   colAttr = 'data-col';
   
   actuate(grid:Grid) {
-    console.log('actuate', grid);
     
     window.requestAnimationFrame(() => {
       
